@@ -65,18 +65,25 @@ function ProcessJSON(exceljson) {
             for (var j = 0; j < total_std_param.length; j++) {
                 if (object_keys[i] == total_std_param[j].parameterCode &&
                     total_std_param[j].purposeid == 14 &&
-                    total_std_param[j].standardID == 11 &&
-                    exceljson[k][object_keys[i]] != "") {
+                    total_std_param[j].standardID == 11) {
                     var object_para = {}
 
                     /*** Tạo Object Detail cho từng Para ***/
                     object_para[total_std_param[j].id] = {};
-                    object_para[total_std_param[j].id].v = parseFloat(exceljson[k][object_keys[i]]);
-                    if (exceljson[k][object_keys[i]] >= total_std_param[j].min_value &&
-                        exceljson[k][object_keys[i]] <= total_std_param[j].min_value) {
-                        object_para[total_std_param[j].id].inlimit = "N"
+                    /*** Kiểm tra có value với thông số đó hay không, nếu không có thì để Null ***/
+                    /*** Kiểm tra có value với thông số đó hay không, nếu không có thì để Null ***/
+                    if (exceljson[k][object_keys[i]] != "") {
+                        object_para[total_std_param[j].id].v = parseFloat(exceljson[k][object_keys[i]]);
+                        /*** Kiểm tra vượt ngưỡng ***/
+                        if (exceljson[k][object_keys[i]] >= total_std_param[j].min_value &&
+                            exceljson[k][object_keys[i]] <= total_std_param[j].min_value) {
+                            object_para[total_std_param[j].id].inlimit = "N"
+                        } else {
+                            object_para[total_std_param[j].id].inlimit = "Y"
+                        }
                     } else {
-                        object_para[total_std_param[j].id].inlimit = "Y"
+                        object_para[total_std_param[j].id].v = null;
+                        object_para[total_std_param[j].id].inlimit = "N"
                     }
                     data_para.push(object_para)
                 }

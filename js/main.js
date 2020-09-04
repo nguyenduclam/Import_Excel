@@ -72,11 +72,11 @@ function ProcessJSON(exceljson) {
                     object_para[total_std_param[j].id] = {};
                     /*** Kiểm tra có value với thông số đó hay không, nếu không có thì để Null ***/
                     /*** Kiểm tra có value với thông số đó hay không, nếu không có thì để Null ***/
-                    if (exceljson[k][object_keys[i]] != "") {
+                    if (parseFloat(exceljson[k][object_keys[i]]) != "") {
                         object_para[total_std_param[j].id].v = parseFloat(exceljson[k][object_keys[i]]);
                         /*** Kiểm tra vượt ngưỡng ***/
-                        if (exceljson[k][object_keys[i]] >= total_std_param[j].min_value &&
-                            exceljson[k][object_keys[i]] <= total_std_param[j].min_value) {
+                        if (parseFloat(exceljson[k][object_keys[i]]) >= parseFloat(total_std_param[j].min_value) &&
+                            parseFloat(exceljson[k][object_keys[i]]) <= parseFloat(total_std_param[j].max_value)) {
                             object_para[total_std_param[j].id].inlimit = "N"
                         } else {
                             object_para[total_std_param[j].id].inlimit = "Y"
@@ -85,7 +85,7 @@ function ProcessJSON(exceljson) {
                         object_para[total_std_param[j].id].v = null;
                         object_para[total_std_param[j].id].inlimit = "N"
                     }
-                    data_para.push(object_para)
+                    data_para.push(JSON.stringify(object_para))
                 }
             }
         }
